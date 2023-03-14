@@ -7,14 +7,14 @@ import Wheel from './Wheel';
 const WheelLottery = () => {
     const [items, setItems] = useState([]);
     const [selected, setSelected] = useState([]);
+    const [curId, setId] = useState(1);
 
-    let curId = 1;
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setItems([...items, {name: e.target.name.value, relativeProbability: e.target.probability.value, _id: curId}]);
-        curId += 1;
-        console.log(items);
+        setId(curId+1);
+        //console.log(curId);
     }
 
     const onSelect = (_id) => {
@@ -24,14 +24,20 @@ const WheelLottery = () => {
         let found = false;
         var tmp = [...selected];
         tmp = tmp.map((it) => {
-            if (it._id == _id) {
+            if (it._id === _id) {
                 it.cnt++;
                 found = true;
+                //console.log("hello"+it.name);
             }
             return it;
         });
         if (found === false) {
-            tmp.push({_id: _id, cnt: 1});
+            items.forEach((it) => {
+                if (it._id === _id) {
+                    tmp.push({name: it.name, _id: _id, cnt: 1});
+                    //console.log("hi"+it._id);
+                }
+            });
         }
         setSelected(tmp);
     }
@@ -45,6 +51,10 @@ const WheelLottery = () => {
                 return true;
         });
         setSelected(tmp);
+    }
+
+    const resetWheel= () => {
+        setItems([]);
     }
 
     return (
@@ -73,6 +83,9 @@ const WheelLottery = () => {
             />
 
             <Wheel items={items} onSelect={onSelect}/>
+
+            <Button size="small" shape="round" type="primary" onClick={resetWheel}
+                                style={{background: "#da3768"}}>Reset Wheel</Button>
         </React.Fragment>
      );
 }

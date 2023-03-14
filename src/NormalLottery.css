@@ -1,0 +1,9 @@
+.normalForm {
+    display: inline-block;
+    width: 30%;
+}
+
+.piechart {
+    display: inline-block;
+    width: auto;
+}
